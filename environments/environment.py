@@ -11,7 +11,7 @@ import wandb
 from utils import *
 import pickle
 from utils import personas
-
+import Simulation.smart_dm as smart_dm
 
 class Environment:
     def __init__(self, model_path, config):
@@ -125,6 +125,10 @@ class Environment:
                                      lr=self.env_learning_rate)
         self.set_train_mode()
         metrics = Metrics("ENV")
+        ml_list = OnlineSimulationDataSet(config=self.config, is_for_ml=True).ml_list
+
+        smart_dm.LinearRegressionTrainer(ml_list)
+        print(0/0)
         for epoch in range(self.config["total_epochs"]):
             result_saver = ResultSaver(config=self.config, epoch=epoch)
             print("#" * 16)

@@ -30,7 +30,7 @@ class OfflineDataSet(Dataset):
         if "X" in user_groups:  # Offline Human - training groups (E_A)
             self.actions_df = pd.read_csv(x_path)
             assert self.actions_df.user_id.max() + 1 == DATA_CLEAN_ACTION_PATH_X_NUMBER_OF_USERS
-        if "Y" in user_groups: # Offline Human - testing groups (E_B)
+        if "Y" in user_groups:  # Offline Human - testing groups (E_B)
             Y_dataset = pd.read_csv(y_path)
             assert Y_dataset.user_id.max() + 1 == DATA_CLEAN_ACTION_PATH_Y_NUMBER_OF_USERS
             Y_dataset.user_id += DATA_CLEAN_ACTION_PATH_X_NUMBER_OF_USERS
@@ -54,11 +54,12 @@ class OfflineDataSet(Dataset):
 
         if users is not None:
             self.actions_df = self.actions_df[self.actions_df["user_id"].isin(users.tolist())]
-            assert self.actions_df["user_id"].nunique() == len(users.tolist()), "some of the users that chosen to used"\
+            assert self.actions_df["user_id"].nunique() == len(users.tolist()), "some of the users that chosen to used" \
                                                                                 "are not exists in the dataset!"
 
         if "persona" in self.actions_df.columns:
-            print("user per persona:", self.actions_df[["persona", "user_id"]].drop_duplicates().groupby("persona").count())
+            print("user per persona:",
+                  self.actions_df[["persona", "user_id"]].drop_duplicates().groupby("persona").count())
 
         grouped_counts = self.actions_df.groupby(["user_id", "strategy_id"]).size().reset_index(name="N")
         self.actions_df = self.actions_df.merge(grouped_counts, on=["user_id", "strategy_id"], how="left")
@@ -162,7 +163,7 @@ class OfflineDataSet(Dataset):
 
 
 class OnlineSimulationDataSet(Dataset):
-    def __init__(self, config):
+    def __init__(self, config, is_for_ml=False):
         self.config = config
         simulation_th = SIMULATION_TH
         max_active = SIMULATION_MAX_ACTIVE_USERS
@@ -215,7 +216,7 @@ class OnlineSimulationDataSet(Dataset):
 
         pbar = trange(self.max_active)
         for i in pbar:
-            self.new_user()
+            self.ml_list = self.new_user(is_for_ml)
             pbar.set_description(f"Create online-simulation users for this epoch. "
                                  f"mean games/user: {(self.total_games_created / self.next_user):.2f}")
 
@@ -246,7 +247,7 @@ class OnlineSimulationDataSet(Dataset):
                             3: ("topic based", basic_nature[2], user_strategies.topic_based(positive_topics,
                                                                                             negative_topics,
                                                                                             quality_threshold)),
-                            4: ("LLM_static",  basic_nature[3], user_strategies.LLM_based(is_stochastic=False)),
+                            4: ("LLM_static", basic_nature[3], user_strategies.LLM_based(is_stochastic=False)),
                             5: ("LLM_dynamic", basic_nature[4], user_strategies.LLM_based(is_stochastic=True)),
                             }
             self.nature = np.random.rand(len(self.ACTIONS)) * np.array([v[1] for v in self.ACTIONS.values()])
@@ -258,13 +259,14 @@ class OnlineSimulationDataSet(Dataset):
             self.user_proba = self.nature.copy()
 
         def update_proba(self):
-            reduce_feelings = np.random.rand(len(self.ACTIONS) - 1) * self.user_improve * 10/9 - (self.user_improve / 10)
+            reduce_feelings = np.random.rand(len(self.ACTIONS) - 1) * self.user_improve * 10 / 9 - (
+                        self.user_improve / 10)
             total_reduced = self.user_proba[1:] * reduce_feelings
             self.user_proba[1:] -= total_reduced
             self.user_proba[1:] = np.maximum(0, self.user_proba[1:])
             self.user_proba[0] = 1 - self.user_proba[1:].sum()
 
-    def play_round(self, bot_message, user, previous_rounds, hotel, review_id):
+    def play_round(self, bot_message, user, previous_rounds, hotel, review_id, ml_list=None):
         user_strategy = self.sample_from_probability_vector(user.user_proba)
         user_strategy_function = user.ACTIONS[user_strategy][2]
         review_features = self.gcf[review_id]
@@ -273,6 +275,12 @@ class OnlineSimulationDataSet(Dataset):
                        "hotel_value": hotel.mean(),
                        "review_features": review_features,
                        "review_id": review_id}
+        if ml_list is not None:
+            info = [information['review_features'][i] for i in range(37)]
+            prev = [information['previous_rounds'][i][1] for i in range(len(information['previous_rounds']))]
+            for i in range(10 - len(prev)):
+                prev.append(0)
+            ml_list.append(([[information["bot_message"]] + info + prev][0], information["hotel_value"]))
         user_action = user_strategy_function(information)
         return user_action
 
@@ -330,8 +338,7 @@ class OnlineSimulationDataSet(Dataset):
                 options = [3, 0, 2, 5, 19, 59] + [132, 23, 107, 43, 17, 93]
                 return random.sample(options, self.bots_per_user)
 
-
-    def new_user(self):
+    def new_user(self, is_for_ml=False):
         user_id = self.next_user
         assert user_id < self.n_users
         args = {"favorite_review": self.get_review()}
@@ -339,6 +346,7 @@ class OnlineSimulationDataSet(Dataset):
                                   favorite_topic_method="review", **args)
         bots = self.sample_bots()
         game_id = 0
+        ml_list = []
         for bot in bots:
             user.return_to_init_proba()
             bot_strategy = getattr(bot_strategies, f"strategy_{bot}")
@@ -363,8 +371,12 @@ class OnlineSimulationDataSet(Dataset):
                     review_id = self.get_review_id(hotel_id, np.argmax(hotel == bot_message))
 
                     signal_error = np.random.normal(0, self.SIMULATION_SIGNAL_EPSILON)
-                    user_action = self.play_round(bot_message + signal_error, user, previous_rounds,
-                                                  hotel, review_id)  # DM plays
+                    if is_for_ml:
+                        user_action = self.play_round(bot_message + signal_error, user, previous_rounds,
+                                                      hotel, review_id, ml_list)  # DM plays
+                    else:
+                        user_action = self.play_round(bot_message + signal_error, user, previous_rounds,
+                                                      hotel, review_id)
                     round_result = self.check_choice(hotel, user_action)  # round results
                     correct_answers += round_result
 
@@ -413,6 +425,8 @@ class OnlineSimulationDataSet(Dataset):
         self.n_games_per_user[user_id] = game_id
         self.total_games_created += game_id
         self.active_users.append(user_id)
+        if is_for_ml:
+            return ml_list
 
     def __len__(self):
         if self.next_user <= 50:

@@ -126,7 +126,7 @@ class Environment:
         self.set_train_mode()
         metrics = Metrics("ENV")
         ml_list = OnlineSimulationDataSet(config=self.config, is_for_ml=True).ml_list
-        smart_dm.MLTrainer.initialize_samples(ml_list) # no need of object? - check
+        smart_dm.MLTrainer.initialize_samples(ml_list)
         linear_regression_model = smart_dm.LinearRegressionTrainer()
         # ADD ALL HERE
         

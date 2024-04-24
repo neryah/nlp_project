@@ -41,6 +41,8 @@ class MLTrainer:
             cls._samples = samples
             cls._X = np.array([sample[0] for sample in samples])
             cls._Y = np.array([sample[1] for sample in samples])
+        else:
+            raise ValueError("Samples have already been initialized.")
 
     def __init__(self):        
         if self._samples is None:

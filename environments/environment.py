@@ -126,8 +126,11 @@ class Environment:
         self.set_train_mode()
         metrics = Metrics("ENV")
         ml_list = OnlineSimulationDataSet(config=self.config, is_for_ml=True).ml_list
-
-        smart_dm.LinearRegressionTrainer(ml_list)
+        smart_dm.MLTrainer().initialize_samples(ml_list)
+        linear_regression_model = smart_dm.LinearRegressionTrainer()
+        # ADD ALL HERE
+        
+        # test model.predict... - make sure out model is trained as expected:
         print(0/0)
         for epoch in range(self.config["total_epochs"]):
             result_saver = ResultSaver(config=self.config, epoch=epoch)

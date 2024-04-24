@@ -30,12 +30,24 @@ from sklearn.ensemble import VotingRegressor
 from sklearn.ensemble import VotingClassifier
 
 
-
 class MLTrainer:
-    def __init__(self, samples):        
-        self.X = np.array([sample[0] for sample in samples])
-        self.Y = np.array([sample[1] for sample in samples])
+    _samples = None
+    _X = None
+    _Y = None
+    
+    @classmethod
+    def initialize_samples(cls, samples):
+        if cls._samples is None:
+            cls._samples = samples
+            cls._X = np.array([sample[0] for sample in samples])
+            cls._Y = np.array([sample[1] for sample in samples])
 
+    def __init__(self):        
+        if self._samples is None:
+            raise ValueError("Samples must be initialized before creating an instance of MLTrainer.")
+        
+        self.X = self._X
+        self.Y = self._Y
 
     def train(self, model):
 
@@ -64,225 +76,118 @@ class MLTrainer:
         train_accuracy = accuracy_score(Y_train >= 8, Y_pred_train >= 8)
         test_accuracy = accuracy_score(Y_test >= 8, Y_pred_test >= 8)
 
-        self.trained_model = model
+        # Loss
+        print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
+        # Accuracy
+        print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
 
         return train_rmse, test_rmse, train_accuracy, test_accuracy
 
-    # def predict(bot_message, previous_rounds, review_features)
-    #     return self.trained_model.predict([bot_message] + previous_rounds + review_features.values())
-
-
-# dm_strategy = LinearRegression(bot_message, previous_rounds, review_features, hotel_value)
-
-def LinearRegressionTrainer(samples):
-    trainer = MLTrainer(samples)
+def LinearRegressionTrainer():
+    trainer = MLTrainer()
     model = LinearRegression()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
 
-def LogisticRegressionTrainer(samples):
-    trainer = MLTrainer(samples)
+def LogisticRegressionTrainer():
+    trainer = MLTrainer()
     model = LogisticRegression()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
 
-def RandomForestRegressorTrainer(samples):
-    trainer = MLTrainer(samples)
+def RandomForestRegressorTrainer():
+    trainer = MLTrainer()
     model = RandomForestRegressor()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
 
-def RandomForestClassifierTrainer(samples):
-    trainer = MLTrainer(samples)
+def RandomForestClassifierTrainer():
+    trainer = MLTrainer()
     model = RandomForestClassifier()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
 
-def SVRTrainer(samples):
-    trainer = MLTrainer(samples)
+def SVRTrainer():
+    trainer = MLTrainer()
     model = SVR()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
 
-def SVCTrainer(samples):
-    trainer = MLTrainer(samples)
+def SVCTrainer():
+    trainer = MLTrainer()
     model = SVC()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
 
-def MLPRegressorTrainer(samples):
-    trainer = MLTrainer(samples)
+def MLPRegressorTrainer():
+    trainer = MLTrainer()
     model = MLPRegressor()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
 
-def MLPClassifierTrainer(samples):
-    trainer = MLTrainer(samples)
+def MLPClassifierTrainer():
+    trainer = MLTrainer()
     model = MLPClassifier()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
 
-def GradientBoostingRegressorTrainer(samples):
-    trainer = MLTrainer(samples)
+def GradientBoostingRegressorTrainer():
+    trainer = MLTrainer()
     model = GradientBoostingRegressor()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
 
-def GradientBoostingClassifierTrainer(samples):
-    trainer = MLTrainer(samples)
+def GradientBoostingClassifierTrainer():
+    trainer = MLTrainer()
     model = GradientBoostingClassifier()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
 
-def AdaBoostRegressorTrainer(samples):
-    trainer = MLTrainer(samples)
+def AdaBoostRegressorTrainer():
+    trainer = MLTrainer()
     model = AdaBoostRegressor()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
 
-def AdaBoostClassifierTrainer(samples):
-    trainer = MLTrainer(samples)
+def AdaBoostClassifierTrainer():
+    trainer = MLTrainer()
     model = AdaBoostClassifier()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
 
-def BaggingRegressorTrainer(samples):
-    trainer = MLTrainer(samples)
+def BaggingRegressorTrainer():
+    trainer = MLTrainer()
     model = BaggingRegressor()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
 
-
-def BaggingClassifierTrainer(samples):
-    trainer = MLTrainer(samples)
+def BaggingClassifierTrainer():
+    trainer = MLTrainer()
     model = BaggingClassifier()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
 
-def StackingRegressorTrainer(samples):
-    trainer = MLTrainer(samples)
+def StackingRegressorTrainer():
+    trainer = MLTrainer()
     model = StackingRegressor()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
 
-
-def StackingClassifierTrainer(samples):
-    trainer = MLTrainer(samples)
+def StackingClassifierTrainer():
+    trainer = MLTrainer()
     model = StackingClassifier()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
 
-
-def VotingRegressorTrainer(samples):
-    trainer = MLTrainer(samples)
+def VotingRegressorTrainer():
+    trainer = MLTrainer()
     model = VotingRegressor()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
 
-def VotingClassifierTrainer(samples):
-    trainer = MLTrainer(samples)
+def VotingClassifierTrainer():
+    trainer = MLTrainer()
     model = VotingClassifier()
-    train_rmse, test_rmse, train_accuracy, test_accuracy = trainer.train(model)
-    # Loss
-    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    # Accuracy
-    print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    trainer.train(model)
     return model
-
-
-
-
-
-# Example usage:
-# trainer = MLTrainer(bot_message, previous_rounds, review_features, hotel_value)
-# model = LinearRegression()
-# train_rmse, test_rmse = trainer.train(model)
-# print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-
-
-
-
-
-
-# class LinearRegressionTrainer(MLTrainer):
-#     def __init__(self, bot_message, previous_rounds, review_features, hotel_value):
-#         super().__init__(bot_message, previous_rounds, review_features, hotel_value)
-        
-
-#     def train(self):
-#         model = LinearRegression()
-#         return super().train(model)
-
-# Example usage:
-# trainer = LinearRegressionTrainer(bot_message, previous_rounds, review_features, hotel_value)
-# train_rmse, test_rmse = trainer.train()
-# print(f"Linear Regression - Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
 

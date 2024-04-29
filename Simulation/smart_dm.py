@@ -34,7 +34,7 @@ class MLTrainer:
     _samples = None
     _X = None
     _Y = None
-    
+
     @classmethod
     def initialize_samples(cls, samples):
         if cls._samples is None:
@@ -44,30 +44,30 @@ class MLTrainer:
         else:
             raise ValueError("Samples have already been initialized.")
 
-    def __init__(self):        
+    def __init__(self):
         if self._samples is None:
             raise ValueError("Samples must be initialized before creating an instance of MLTrainer.")
-        
+
         self.X = self._X
         self.Y = self._Y
 
     def train(self, model):
 
         # Split data into train and test sets
-        X_train, X_test, Y_train, Y_test = train_test_split(self.X, self.Y, test_size=0.2, random_state=42)
-        
+        X_train, X_test, Y_train, Y_test = train_test_split(self.X, self.Y, test_size=0.2)
+
         #time - start measuring time:
         start_train = time.time()
 
         # Train the model
         model.fit(X_train, Y_train)
-        
+
         start_predict = time.time()
 
         # Make predictions
         Y_pred_train = model.predict(X_train)
         Y_pred_test = model.predict(X_test)
-        
+
         end = time.time()
         print(f"Training time: {start_predict - start_train}, Prediction time: {end - start_predict}")
 
@@ -85,17 +85,58 @@ class MLTrainer:
 
         return train_rmse, test_rmse, train_accuracy, test_accuracy
 
+    def discrete_train(self, model):
+
+        # Split data into train and test sets
+        X_train, X_test, Y_train, Y_test = train_test_split(self.X, self.Y, test_size=0.2)
+
+        # modify Y_train and Y_test to be discrete
+        Y_train = Y_train >= 8
+        Y_test = Y_test >= 8
+
+        #time - start measuring time:
+        start_train = time.time()
+
+        # Train the model
+        model.fit(X_train, Y_train)
+
+        start_predict = time.time()
+
+        # Make predictions
+        Y_pred_train = model.predict(X_train)
+        Y_pred_test = model.predict(X_test)
+
+        end = time.time()
+        print(f"Training time: {start_predict - start_train}, Prediction time: {end - start_predict}")
+
+        # Evaluate the model
+        train_rmse = 0
+        test_rmse = 0
+        # accuracy - prediction is correct if both values are over 8 or both are under 8:
+        train_accuracy = accuracy_score(Y_train, Y_pred_train)
+        test_accuracy = accuracy_score(Y_test, Y_pred_test)
+
+        # Loss
+        print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
+        # Accuracy
+        print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+
+        return train_rmse, test_rmse, train_accuracy, test_accuracy
+
+
 def LinearRegressionTrainer():
     trainer = MLTrainer()
     model = LinearRegression()
     trainer.train(model)
     return model
 
+
 def LogisticRegressionTrainer():
     trainer = MLTrainer()
     model = LogisticRegression()
-    trainer.train(model)
+    trainer.discrete_train(model)
     return model
+
 
 def RandomForestRegressorTrainer():
     trainer = MLTrainer()
@@ -103,11 +144,13 @@ def RandomForestRegressorTrainer():
     trainer.train(model)
     return model
 
+
 def RandomForestClassifierTrainer():
     trainer = MLTrainer()
     model = RandomForestClassifier()
-    trainer.train(model)
+    trainer.discrete_train(model)
     return model
+
 
 def SVRTrainer():
     trainer = MLTrainer()
@@ -115,11 +158,13 @@ def SVRTrainer():
     trainer.train(model)
     return model
 
+
 def SVCTrainer():
     trainer = MLTrainer()
     model = SVC()
-    trainer.train(model)
+    trainer.discrete_train(model)
     return model
+
 
 def MLPRegressorTrainer():
     trainer = MLTrainer()
@@ -127,11 +172,13 @@ def MLPRegressorTrainer():
     trainer.train(model)
     return model
 
+
 def MLPClassifierTrainer():
     trainer = MLTrainer()
     model = MLPClassifier()
-    trainer.train(model)
+    trainer.discrete_train(model)
     return model
+
 
 def GradientBoostingRegressorTrainer():
     trainer = MLTrainer()
@@ -139,11 +186,13 @@ def GradientBoostingRegressorTrainer():
     trainer.train(model)
     return model
 
+
 def GradientBoostingClassifierTrainer():
     trainer = MLTrainer()
     model = GradientBoostingClassifier()
-    trainer.train(model)
+    trainer.discrete_train(model)
     return model
+
 
 def AdaBoostRegressorTrainer():
     trainer = MLTrainer()
@@ -151,11 +200,13 @@ def AdaBoostRegressorTrainer():
     trainer.train(model)
     return model
 
+
 def AdaBoostClassifierTrainer():
     trainer = MLTrainer()
     model = AdaBoostClassifier()
-    trainer.train(model)
+    trainer.discrete_train(model)
     return model
+
 
 def BaggingRegressorTrainer():
     trainer = MLTrainer()
@@ -163,33 +214,11 @@ def BaggingRegressorTrainer():
     trainer.train(model)
     return model
 
+
 def BaggingClassifierTrainer():
     trainer = MLTrainer()
     model = BaggingClassifier()
-    trainer.train(model)
+    trainer.discrete_train(model)
     return model
 
-def StackingRegressorTrainer():
-    trainer = MLTrainer()
-    model = StackingRegressor()
-    trainer.train(model)
-    return model
-
-def StackingClassifierTrainer():
-    trainer = MLTrainer()
-    model = StackingClassifier()
-    trainer.train(model)
-    return model
-
-def VotingRegressorTrainer():
-    trainer = MLTrainer()
-    model = VotingRegressor()
-    trainer.train(model)
-    return model
-
-def VotingClassifierTrainer():
-    trainer = MLTrainer()
-    model = VotingClassifier()
-    trainer.train(model)
-    return model
 

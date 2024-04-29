@@ -69,7 +69,7 @@ class MLTrainer:
         Y_pred_test = model.predict(X_test)
 
         end = time.time()
-        print(f"Training time: {start_predict - start_train}, Prediction time: {end - start_predict}")
+        print(f"Training time: {start_predict - start_train}, Prediction time: {end - start_predict}, Total time: {end - start_train}")
 
         # Evaluate the model
         train_rmse = mean_squared_error(Y_train, Y_pred_train, squared=False)

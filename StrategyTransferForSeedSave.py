@@ -4,7 +4,7 @@ from utils.functions import *
 import wandb
 from utils import personas
 import argparse
-from environments.environment_for_model_pick_save_load import Environment
+from environments.environment_for_saves import Environment
 
 parser = argparse.ArgumentParser(description='Hyperparameter tuning with wandb.')
 
@@ -19,8 +19,6 @@ def str2bool(v):
     else:
         raise argparse.ArgumentTypeError('Boolean value expected.')
 
-
-parser.add_argument('model_function', type=str, default='LinearRegressionTrainer', help='Model function')
 
 # General Features
 parser.add_argument('--ENV_HPT_mode', type=str2bool, default=False, help='Enable/disable HPT mode')
@@ -108,6 +106,6 @@ all_bot_points = []
 hotels = utils.Hotels(config)
 
 env_name = config["wandb_run_id"]
-env = Environment(env_name, config, config["model_function"])
-train_rmses, test_rmses, train_accuracies, test_accuracies = env.train()
+env = Environment(env_name, config)
+env.train()
 

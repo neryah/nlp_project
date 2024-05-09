@@ -29,6 +29,12 @@ from sklearn.ensemble import StackingClassifier
 from sklearn.ensemble import VotingRegressor
 from sklearn.ensemble import VotingClassifier
 from Simulation.smart_dm import MLTrainer
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier, ExtraTreeClassifier
+from sklearn.naive_bayes import GaussianNB, BernoulliNB, MultinomialNB
+from sklearn.linear_model import SGDClassifier, PassiveAggressiveClassifier, Perceptron, RidgeClassifier
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+
 
 
 def LinearRegressionTrainer():
@@ -112,4 +118,69 @@ def BaggingRegressorTrainer():
 def BaggingClassifierTrainer():
     trainer = MLTrainer()
     model = BaggingClassifier()
+    return trainer.discrete_train(model)
+
+def KNeighborsClassifierTrainer():
+    trainer = MLTrainer()
+    model = KNeighborsClassifier()
+    return trainer.discrete_train(model)
+
+
+def DecisionTreeClassifierTrainer():
+    trainer = MLTrainer()
+    model = DecisionTreeClassifier()
+    return trainer.discrete_train(model)
+
+
+def ExtraTreeClassifierTrainer():
+    trainer = MLTrainer()
+    model = ExtraTreeClassifier()
+    return trainer.discrete_train(model)
+
+
+def GaussianNBTrainer():
+    trainer = MLTrainer()
+    model = GaussianNB()
+    return trainer.discrete_train(model)
+
+
+def BernoulliNBTrainer():
+    trainer = MLTrainer()
+    model = BernoulliNB()
+    return trainer.discrete_train(model)
+
+
+def MultinomialNBTrainer():
+    trainer = MLTrainer()
+    model = MultinomialNB()
+    return trainer.discrete_train(model)
+
+
+def SGDClassifierTrainer():
+    trainer = MLTrainer()
+    model = SGDClassifier()
+    return trainer.discrete_train(model)
+
+
+def PassiveAggressiveClassifierTrainer():
+    trainer = MLTrainer()
+    model = PassiveAggressiveClassifier()
+    return trainer.discrete_train(model)
+
+
+def PerceptronTrainer():
+    trainer = MLTrainer()
+    model = Perceptron()
+    return trainer.discrete_train(model)
+
+
+def RidgeClassifierTrainer():
+    trainer = MLTrainer()
+    model = RidgeClassifier()
+    return trainer.discrete_train(model)
+
+
+def QuadraticDiscriminantAnalysisTrainer():
+    trainer = MLTrainer()
+    model = QuadraticDiscriminantAnalysis()
     return trainer.discrete_train(model)

@@ -1,10 +1,12 @@
 import utils
-import environments
 from consts import *
 from utils.functions import *
 import wandb
 from utils import personas
 import argparse
+from environments.environment_for_ml_sim import Environment
+import time
+
 
 parser = argparse.ArgumentParser(description='Hyperparameter tuning with wandb.')
 def str2bool(v):
@@ -16,9 +18,6 @@ def str2bool(v):
         return False
     else:
         raise argparse.ArgumentTypeError('Boolean value expected.')
-
-
-parser.add_argument('model_function', type=str, default='None', help='Model function')
 
 # General Features
 parser.add_argument('--ENV_HPT_mode', type=str2bool, default=False, help='Enable/disable HPT mode')
@@ -105,9 +104,6 @@ all_user_points = []
 all_bot_points = []
 hotels = utils.Hotels(config)
 
-env_name = config["wandb_run_id"]
-
-if config["architecture"] == "LSTM":
-    env_model = environments.LSTM_env.LSTM_env(env_name, config=config)
-elif config["architecture"] == "transformer":
-    env_model = environments.transformer_env.transformer_env(env_name, config=config)
+start = time.time()
+env_model = Environment(config=config, mode='save_models', without=11)
+print(f"The run took {time.time() - start} seconds which is {round((time.time() - start) / 60, 2)} minutes.")

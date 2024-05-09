@@ -29,6 +29,17 @@ STRATEGIC_FEATURES_ORDER = ['roundNum', 'user_points', 'bot_points',
                             'last_last_didGo_True', 'last_last_didGo_False',
                             'last_last_didWin_True', 'last_last_didWin_False',
                             "user_earned_more", "user_not_earned_more"]
+
+ALL_CLASSIFIERS = ["LogisticRegressionTrainer", "RandomForestClassifierTrainer", "SVCTrainer", "MLPClassifierTrainer",
+                   "GradientBoostingClassifierTrainer", "AdaBoostClassifierTrainer", "BaggingClassifierTrainer",
+                   "KNeighborsClassifierTrainer", "DecisionTreeClassifierTrainer", "ExtraTreeClassifierTrainer",
+                   "GaussianNBTrainer", "BernoulliNBTrainer", "MultinomialNBTrainer", "SGDClassifierTrainer",
+                   "PassiveAggressiveClassifierTrainer", "PerceptronTrainer", "RidgeClassifierTrainer",
+                   "QuadraticDiscriminantAnalysisTrainer"]
+
+WINNING_MODELS = ['None', 'BernoulliNBTrainer', 'RidgeClassifierTrainer', 'SVCTrainer', 'LogisticRegressionTrainer',
+                  'AdaBoostClassifierTrainer', 'MultinomialNBTrainer', 'GradientBoostingClassifierTrainer']
+
 if USING_REACTION_TIME:
     STRATEGIC_FEATURES_ORDER += reaction_time_columns_names
 

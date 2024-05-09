@@ -163,7 +163,7 @@ class OfflineDataSet(Dataset):
 
 
 class OnlineSimulationDataSet(Dataset):
-    def __init__(self, config, is_for_ml=False):
+    def __init__(self, config, is_for_ml=False, model=None):
         self.config = config
         simulation_th = SIMULATION_TH
         max_active = SIMULATION_MAX_ACTIVE_USERS
@@ -190,6 +190,7 @@ class OnlineSimulationDataSet(Dataset):
         self.zero_knowledge = zero_knowledge
         self.favorite_topic_method = favorite_topic_method
         self.weight_type = weight_type
+        self.model = model
 
         self.hotels = [np.array([0] * 7)]
         self.reviews_id = [np.array([0] * 7)]
@@ -223,7 +224,7 @@ class OnlineSimulationDataSet(Dataset):
         self.add_to_user_id = DATA_CLEAN_ACTION_PATH_X_NUMBER_OF_USERS + DATA_CLEAN_ACTION_PATH_Y_NUMBER_OF_USERS
 
     class SimulatedUser:
-        def __init__(self, user_improve, basic_nature, favorite_topic_method, **args):
+        def __init__(self, user_improve, basic_nature, favorite_topic_method, ml_model, **args):
             history_window = np.random.negative_binomial(2, 1 / 2) + np.random.randint(0, 2)
             quality_threshold = np.random.normal(8, 0.5)
             good_topics = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 19, 28, 42]
@@ -240,6 +241,8 @@ class OnlineSimulationDataSet(Dataset):
                 negative_topics = np.array(negative_topics)
                 np.random.shuffle(negative_topics)
 
+            ml_nature = 1 if ml_model is not None else 0
+
             self.ACTIONS = {0: ("correct", 0, user_strategies.correct_action),
                             1: ("random", basic_nature[0], user_strategies.random_action),
                             2: ("history_and_review_quality", basic_nature[1],
@@ -249,6 +252,7 @@ class OnlineSimulationDataSet(Dataset):
                                                                                             quality_threshold)),
                             4: ("LLM_static", basic_nature[3], user_strategies.LLM_based(is_stochastic=False)),
                             5: ("LLM_dynamic", basic_nature[4], user_strategies.LLM_based(is_stochastic=True)),
+                            6: ("ML_model", ml_nature, user_strategies.ML_based(ml_model)),
                             }
             self.nature = np.random.rand(len(self.ACTIONS)) * np.array([v[1] for v in self.ACTIONS.values()])
             self.nature = self.nature / sum(self.nature)
@@ -343,7 +347,7 @@ class OnlineSimulationDataSet(Dataset):
         assert user_id < self.n_users
         args = {"favorite_review": self.get_review()}
         user = self.SimulatedUser(user_improve=self.user_improve, basic_nature=self.basic_nature,
-                                  favorite_topic_method="review", **args)
+                                  favorite_topic_method="review", ml_model=self.model, **args)
         bots = self.sample_bots()
         game_id = 0
         ml_list = []
@@ -409,6 +413,7 @@ class OnlineSimulationDataSet(Dataset):
                            "last_last_didWin_False": last_last_didWin_False,
                            "last_last_didWin_True": last_last_didWin_True,
                            "user_points": user_points, "bot_points": bot_points, "weight": weight, "is_sample": True}
+
 
                     # if self.advanced_reaction_time:
                     #     last_reaction_time = self.get_reaction_time(row)

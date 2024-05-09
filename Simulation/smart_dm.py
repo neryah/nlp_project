@@ -29,6 +29,14 @@ from sklearn.ensemble import StackingClassifier
 from sklearn.ensemble import VotingRegressor
 from sklearn.ensemble import VotingClassifier
 
+from sklearn.model_selection import cross_val_score
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier, ExtraTreeClassifier
+from sklearn.naive_bayes import GaussianNB, BernoulliNB, MultinomialNB
+from sklearn.linear_model import SGDClassifier, PassiveAggressiveClassifier, Perceptron, RidgeClassifier
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+import warnings
+
 
 class MLTrainer:
     _samples = None
@@ -36,22 +44,22 @@ class MLTrainer:
     _Y = None
 
     @classmethod
-    def initialize_samples(cls, samples):
-        if cls._samples is None:
-            cls._samples = samples
-            cls._X = np.array([sample[0] for sample in samples])
-            cls._Y = np.array([sample[1] for sample in samples])
+    def initialize_samples(cls, X, Y):
+        if cls._X is None:
+            cls._X = np.array(X)
+            cls._Y = np.array(Y)
         else:
             raise ValueError("Samples have already been initialized.")
 
     def __init__(self):
-        if self._samples is None:
+        if self._X is None:
             raise ValueError("Samples must be initialized before creating an instance of MLTrainer.")
 
         self.X = self._X
         self.Y = self._Y
 
     def train(self, model):
+
 
         # Split data into train and test sets
         X_train, X_test, Y_train, Y_test = train_test_split(self.X, self.Y, test_size=0.2)
@@ -69,7 +77,10 @@ class MLTrainer:
         Y_pred_test = model.predict(X_test)
 
         end = time.time()
-        print(f"Training time: {start_predict - start_train}, Prediction time: {end - start_predict}, Total time: {end - start_train}")
+        print(
+            f"Training time: {start_predict - start_train}, Prediction time: {end - start_predict}, Total time: {end - start_train}")
+
+        print(f"Y_pred_train length: {len(Y_pred_train)}, Y_pred_test length: {len(Y_pred_test)}")
 
         # Evaluate the model
         train_rmse = mean_squared_error(Y_train, Y_pred_train, squared=False)
@@ -85,43 +96,47 @@ class MLTrainer:
 
         return train_rmse, test_rmse, train_accuracy, test_accuracy
 
+    # def discrete_train(self, model):
+    #
+    #     # Split data into train and test sets
+    #     X_train, X_test, Y_train, Y_test = train_test_split(self.X, self.Y, test_size=0.2)
+    #
+    #     #time - start measuring time:
+    #     start_train = time.time()
+    #
+    #     # print(f'X_train: {X_train}, Y_train: {Y_train}')
+    #     # Train the model
+    #     model.fit(X_train, Y_train)
+    #
+    #     start_predict = time.time()
+    #
+    #     # Make predictions
+    #     Y_pred_train = model.predict(X_train)
+    #     Y_pred_test = model.predict(X_test)
+    #
+    #     end = time.time()
+    #     print(f"Training time: {start_predict - start_train}, Prediction time: {end - start_predict}")
+    #
+    #     # Evaluate the model
+    #     train_rmse = 0
+    #     test_rmse = 0
+    #     # accuracy - prediction is correct if both values are over 8 or both are under 8:
+    #     train_accuracy = accuracy_score(Y_train, Y_pred_train)
+    #     test_accuracy = accuracy_score(Y_test, Y_pred_test)
+    #
+    #     # Loss
+    #     print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
+    #     # Accuracy
+    #     print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
+    #
+    #     return train_rmse, test_rmse, train_accuracy, test_accuracy
+
     def discrete_train(self, model):
-
-        # Split data into train and test sets
-        X_train, X_test, Y_train, Y_test = train_test_split(self.X, self.Y, test_size=0.2)
-
-        # modify Y_train and Y_test to be discrete
-        Y_train = Y_train >= 8
-        Y_test = Y_test >= 8
-
-        #time - start measuring time:
-        start_train = time.time()
-
-        # Train the model
-        model.fit(X_train, Y_train)
-
-        start_predict = time.time()
-
-        # Make predictions
-        Y_pred_train = model.predict(X_train)
-        Y_pred_test = model.predict(X_test)
-
-        end = time.time()
-        print(f"Training time: {start_predict - start_train}, Prediction time: {end - start_predict}")
-
-        # Evaluate the model
-        train_rmse = 0
-        test_rmse = 0
-        # accuracy - prediction is correct if both values are over 8 or both are under 8:
-        train_accuracy = accuracy_score(Y_train, Y_pred_train)
-        test_accuracy = accuracy_score(Y_test, Y_pred_test)
-
-        # Loss
-        print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-        # Accuracy
-        print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
-
-        return train_rmse, test_rmse, train_accuracy, test_accuracy
+        # same as discrete_train but with cross validation
+        # implement cross validation
+        scores = np.mean(cross_val_score(model, self.X, self.Y, cv=10, scoring='accuracy', n_jobs=-1))
+        print(f"Cross validation scores: {scores}")
+        return scores
 
 
 def LinearRegressionTrainer():
@@ -134,7 +149,7 @@ def LinearRegressionTrainer():
 def LogisticRegressionTrainer():
     trainer = MLTrainer()
     model = LogisticRegression()
-    trainer.discrete_train(model)
+    model.fit(trainer.X, trainer.Y)
     return model
 
 
@@ -148,7 +163,7 @@ def RandomForestRegressorTrainer():
 def RandomForestClassifierTrainer():
     trainer = MLTrainer()
     model = RandomForestClassifier()
-    trainer.discrete_train(model)
+    model.fit(trainer.X, trainer.Y)
     return model
 
 
@@ -162,21 +177,21 @@ def SVRTrainer():
 def SVCTrainer():
     trainer = MLTrainer()
     model = SVC()
-    trainer.discrete_train(model)
+    model.fit(trainer.X, trainer.Y)
     return model
 
 
 def MLPRegressorTrainer():
     trainer = MLTrainer()
     model = MLPRegressor()
-    trainer.train(model)
+    model.fit(trainer.X, trainer.Y)
     return model
 
 
 def MLPClassifierTrainer():
     trainer = MLTrainer()
     model = MLPClassifier()
-    trainer.discrete_train(model)
+    model.fit(trainer.X, trainer.Y)
     return model
 
 
@@ -190,7 +205,7 @@ def GradientBoostingRegressorTrainer():
 def GradientBoostingClassifierTrainer():
     trainer = MLTrainer()
     model = GradientBoostingClassifier()
-    trainer.discrete_train(model)
+    model.fit(trainer.X, trainer.Y)
     return model
 
 
@@ -204,7 +219,7 @@ def AdaBoostRegressorTrainer():
 def AdaBoostClassifierTrainer():
     trainer = MLTrainer()
     model = AdaBoostClassifier()
-    trainer.discrete_train(model)
+    model.fit(trainer.X, trainer.Y)
     return model
 
 
@@ -218,7 +233,82 @@ def BaggingRegressorTrainer():
 def BaggingClassifierTrainer():
     trainer = MLTrainer()
     model = BaggingClassifier()
-    trainer.discrete_train(model)
+    model.fit(trainer.X, trainer.Y)
     return model
 
 
+def KNeighborsClassifierTrainer():
+    trainer = MLTrainer()
+    model = KNeighborsClassifier()
+    model.fit(trainer.X, trainer.Y)
+    return model
+
+
+def DecisionTreeClassifierTrainer():
+    trainer = MLTrainer()
+    model = DecisionTreeClassifier()
+    model.fit(trainer.X, trainer.Y)
+    return model
+
+
+def ExtraTreeClassifierTrainer():
+    trainer = MLTrainer()
+    model = ExtraTreeClassifier()
+    model.fit(trainer.X, trainer.Y)
+    return model
+
+
+def GaussianNBTrainer():
+    trainer = MLTrainer()
+    model = GaussianNB()
+    model.fit(trainer.X, trainer.Y)
+    return model
+
+
+def BernoulliNBTrainer():
+    trainer = MLTrainer()
+    model = BernoulliNB()
+    model.fit(trainer.X, trainer.Y)
+    return model
+
+
+def MultinomialNBTrainer():
+    trainer = MLTrainer()
+    model = MultinomialNB()
+    model.fit(trainer.X, trainer.Y)
+    return model
+
+
+def SGDClassifierTrainer():
+    trainer = MLTrainer()
+    model = SGDClassifier()
+    model.fit(trainer.X, trainer.Y)
+    return model
+
+
+def PassiveAggressiveClassifierTrainer():
+    trainer = MLTrainer()
+    model = PassiveAggressiveClassifier()
+    model.fit(trainer.X, trainer.Y)
+    return model
+
+
+def PerceptronTrainer():
+    trainer = MLTrainer()
+    model = Perceptron()
+    model.fit(trainer.X, trainer.Y)
+    return model
+
+
+def RidgeClassifierTrainer():
+    trainer = MLTrainer()
+    model = RidgeClassifier()
+    model.fit(trainer.X, trainer.Y)
+    return model
+
+
+def QuadraticDiscriminantAnalysisTrainer():
+    trainer = MLTrainer()
+    model = QuadraticDiscriminantAnalysis()
+    model.fit(trainer.X, trainer.Y)
+    return model

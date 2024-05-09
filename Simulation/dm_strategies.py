@@ -94,6 +94,7 @@ def history_and_review_quality(history_window, quality_threshold):
                 return 0
         else:
             return 0
+
     return func
 
 
@@ -101,13 +102,14 @@ def topic_based(positive_topics, negative_topics, quality_threshold):
     def func(information):
         review_personal_score = information["bot_message"]
         for rank, topic in enumerate(positive_topics):
-            review_personal_score += int(information["review_features"][topic])*2/(rank+1)
+            review_personal_score += int(information["review_features"][topic]) * 2 / (rank + 1)
         for rank, topic in enumerate(negative_topics):
-            review_personal_score -= int(information["review_features"][topic])*2/(rank+1)
+            review_personal_score -= int(information["review_features"][topic]) * 2 / (rank + 1)
         if review_personal_score >= quality_threshold:  # good hotel from user's perspective
             return 1
         else:
             return 0
+
     return func
 
 
@@ -120,9 +122,25 @@ def LLM_based(is_stochastic):
         def func(information):
             review_llm_score = proba2go[information["review_id"]]
             return int(review_llm_score >= 0.5)
+
         return func
     else:
         def func(information):
             review_llm_score = proba2go[information["review_id"]]
             return int(np.random.rand() <= review_llm_score)
+
         return func
+
+
+def ML_based(model):
+    def func(information):
+        # info = [information['review_features'][i] for i in range(37)]
+        # prev = [information['previous_rounds'][i][1] for i in range(len(information['previous_rounds']))]
+        # for i in range(10 - len(prev)):
+        #     prev.append(0)
+        # if model.predict([[information["bot_message"]] + info + prev])[0] > 8:
+        #     return 1
+        # return 0
+        return model.predict([information["review_features"]])[0]
+
+    return func

@@ -95,7 +95,8 @@ class Environment:
             save_winning_models(without)
 
     def get_dataloader(self):
-        test_dataset = OfflineDataSet(user_groups="Y", strategies=self.config.strategies,
-                                      weight_type="sender_receiver", config=self.config)
-        test_sampler = NewUserBatchSampler(test_dataset, batch_size=ENV_BATCH_SIZE, shuffle=False)
-        return DataLoader(test_dataset, batch_sampler=test_sampler, shuffle=False)
+        train_dataset = OfflineDataSet(user_groups="X", weight_type=self.config.loss_weight_type,
+                                               config=self.config)
+        train_sampler = NewUserBatchSampler(train_dataset, batch_size=ENV_BATCH_SIZE, shuffle=True)
+        return DataLoader(train_dataset, batch_sampler=train_sampler, shuffle=False)
+        # return DataLoader(test_dataset, batch_sampler=test_sampler, shuffle=False)

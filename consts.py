@@ -1,6 +1,8 @@
 import torch
 import pandas as pd
 import numpy as np
+from cycler import cycler
+
 
 DATA_GAME_REVIEWS_PATH = "data/game_reviews"
 
@@ -37,8 +39,24 @@ ALL_CLASSIFIERS = ["LogisticRegressionTrainer", "RandomForestClassifierTrainer",
                    "PassiveAggressiveClassifierTrainer", "PerceptronTrainer", "RidgeClassifierTrainer",
                    "QuadraticDiscriminantAnalysisTrainer"]
 
-WINNING_MODELS = ['None', 'BernoulliNBTrainer', 'RidgeClassifierTrainer', 'SVCTrainer', 'LogisticRegressionTrainer',
-                  'AdaBoostClassifierTrainer', 'MultinomialNBTrainer', 'GradientBoostingClassifierTrainer']
+# WINNING_MODELS = ['None', 'BernoulliNBTrainer', 'RidgeClassifierTrainer', 'SVCTrainer', 'LogisticRegressionTrainer',
+#                   'AdaBoostClassifierTrainer', 'MultinomialNBTrainer', 'GradientBoostingClassifierTrainer']
+
+WINNING_MODELS = ["SVCTrainer", "ExtraTreeClassifierTrainer", "DecisionTreeClassifierTrainer",
+                  "MLPClassifierTrainer", "BaggingClassifierTrainer", "RandomForestClassifierTrainer",
+                  "GradientBoostingClassifierTrainer", "RidgeClassifierTrainer", "LogisticRegressionTrainer",
+                  "AdaBoostClassifierTrainer"]
+BEST_5 = ["RandomForestClassifierTrainer", "MLPClassifierTrainer", "ExtraTreeClassifierTrainer",
+          "DecisionTreeClassifierTrainer", "BaggingClassifierTrainer"]
+
+TEAM_NAME = 'nlp_shit'
+PROJECT_NAME = 'final_full_run'
+SWEEP_IDS = ['ulmxfaed', '3ne6qb41', 'vrd9sng9', 'jhheufv1', 'ic27ntdb', 'gdtlrmq0',
+             'hyy7aeu3', 'p6o3kisp', 's6bbzoa1', 'v9jjop58', 'sk3koflp', 'zatmfw6a',
+             'alhbawkc', 'n4tf6kny', '3y6sqa28']
+
+COLOR_CYCLE = cycler(color=['b', 'g', 'r', 'c', 'm', 'y', 'k', 'orange', 'purple', 'brown', 'pink', 'gray', 'olive', ])
+
 
 if USING_REACTION_TIME:
     STRATEGIC_FEATURES_ORDER += reaction_time_columns_names

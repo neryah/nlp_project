@@ -1,9 +1,3 @@
-import time
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
-from sklearn.metrics import accuracy_score
-import numpy as np
-
 # weak models:
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LogisticRegression
@@ -46,7 +40,7 @@ def LinearRegressionTrainer():
 def LogisticRegressionTrainer():
     trainer = MLTrainer()
     model = LogisticRegression()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)
 
 
 def RandomForestRegressorTrainer():
@@ -58,7 +52,7 @@ def RandomForestRegressorTrainer():
 def RandomForestClassifierTrainer():
     trainer = MLTrainer()
     model = RandomForestClassifier()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)
 
 
 def SVRTrainer():
@@ -70,7 +64,7 @@ def SVRTrainer():
 def SVCTrainer():
     trainer = MLTrainer()
     model = SVC()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)
 
 
 def MLPRegressorTrainer():
@@ -82,7 +76,7 @@ def MLPRegressorTrainer():
 def MLPClassifierTrainer():
     trainer = MLTrainer()
     model = MLPClassifier()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)
 
 
 def GradientBoostingRegressorTrainer():
@@ -94,7 +88,7 @@ def GradientBoostingRegressorTrainer():
 def GradientBoostingClassifierTrainer():
     trainer = MLTrainer()
     model = GradientBoostingClassifier()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)
 
 
 def AdaBoostRegressorTrainer():
@@ -106,7 +100,7 @@ def AdaBoostRegressorTrainer():
 def AdaBoostClassifierTrainer():
     trainer = MLTrainer()
     model = AdaBoostClassifier()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)
 
 
 def BaggingRegressorTrainer():
@@ -118,69 +112,69 @@ def BaggingRegressorTrainer():
 def BaggingClassifierTrainer():
     trainer = MLTrainer()
     model = BaggingClassifier()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)
 
 def KNeighborsClassifierTrainer():
     trainer = MLTrainer()
     model = KNeighborsClassifier()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)
 
 
 def DecisionTreeClassifierTrainer():
     trainer = MLTrainer()
     model = DecisionTreeClassifier()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)
 
 
 def ExtraTreeClassifierTrainer():
     trainer = MLTrainer()
     model = ExtraTreeClassifier()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)
 
 
 def GaussianNBTrainer():
     trainer = MLTrainer()
     model = GaussianNB()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)
 
 
 def BernoulliNBTrainer():
     trainer = MLTrainer()
     model = BernoulliNB()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)
 
 
 def MultinomialNBTrainer():
     trainer = MLTrainer()
     model = MultinomialNB()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)
 
 
 def SGDClassifierTrainer():
     trainer = MLTrainer()
     model = SGDClassifier()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)
 
 
 def PassiveAggressiveClassifierTrainer():
     trainer = MLTrainer()
     model = PassiveAggressiveClassifier()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)
 
 
 def PerceptronTrainer():
     trainer = MLTrainer()
     model = Perceptron()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)
 
 
 def RidgeClassifierTrainer():
     trainer = MLTrainer()
     model = RidgeClassifier()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)
 
 
 def QuadraticDiscriminantAnalysisTrainer():
     trainer = MLTrainer()
     model = QuadraticDiscriminantAnalysis()
-    return trainer.discrete_train(model)
+    return trainer.cross_val_train(model)

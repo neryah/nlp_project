@@ -22,12 +22,6 @@ from sklearn.ensemble import AdaBoostClassifier
 #bagging models:
 from sklearn.ensemble import BaggingRegressor
 from sklearn.ensemble import BaggingClassifier
-#stacking models:
-from sklearn.ensemble import StackingRegressor
-from sklearn.ensemble import StackingClassifier
-#voting models:
-from sklearn.ensemble import VotingRegressor
-from sklearn.ensemble import VotingClassifier
 
 from sklearn.model_selection import cross_val_score
 from sklearn.neighbors import KNeighborsClassifier
@@ -35,7 +29,6 @@ from sklearn.tree import DecisionTreeClassifier, ExtraTreeClassifier
 from sklearn.naive_bayes import GaussianNB, BernoulliNB, MultinomialNB
 from sklearn.linear_model import SGDClassifier, PassiveAggressiveClassifier, Perceptron, RidgeClassifier
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
-import warnings
 
 
 class MLTrainer:
@@ -96,44 +89,7 @@ class MLTrainer:
 
         return train_rmse, test_rmse, train_accuracy, test_accuracy
 
-    # def discrete_train(self, model):
-    #
-    #     # Split data into train and test sets
-    #     X_train, X_test, Y_train, Y_test = train_test_split(self.X, self.Y, test_size=0.2)
-    #
-    #     #time - start measuring time:
-    #     start_train = time.time()
-    #
-    #     # print(f'X_train: {X_train}, Y_train: {Y_train}')
-    #     # Train the model
-    #     model.fit(X_train, Y_train)
-    #
-    #     start_predict = time.time()
-    #
-    #     # Make predictions
-    #     Y_pred_train = model.predict(X_train)
-    #     Y_pred_test = model.predict(X_test)
-    #
-    #     end = time.time()
-    #     print(f"Training time: {start_predict - start_train}, Prediction time: {end - start_predict}")
-    #
-    #     # Evaluate the model
-    #     train_rmse = 0
-    #     test_rmse = 0
-    #     # accuracy - prediction is correct if both values are over 8 or both are under 8:
-    #     train_accuracy = accuracy_score(Y_train, Y_pred_train)
-    #     test_accuracy = accuracy_score(Y_test, Y_pred_test)
-    #
-    #     # Loss
-    #     print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
-    #     # Accuracy
-    #     print(f"Training Accuracy: {train_accuracy}, Test Accuracy: {test_accuracy}")
-    #
-    #     return train_rmse, test_rmse, train_accuracy, test_accuracy
-
-    def discrete_train(self, model):
-        # same as discrete_train but with cross validation
-        # implement cross validation
+    def cross_val_train(self, model):
         scores = np.mean(cross_val_score(model, self.X, self.Y, cv=10, scoring='accuracy', n_jobs=-1))
         print(f"Cross validation scores: {scores}")
         return scores

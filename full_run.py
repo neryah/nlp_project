@@ -6,20 +6,20 @@ wandb.login()
 
 
 def main():
-    wandb.init(project="final_run")
+    wandb.init(project="final_full_run")
     subprocess.run(["python", "StrategyTransfer.py", wandb.config['func_name'], f'--seed={wandb.config["seeds"]}'])
 
 
-# 2: Define the search space
-sweep_configuration = {
+sweep_configuration_1 = {
     "method": "grid",
     "metric": {"goal": "maximize", "name": "AUC.test.max"},
     "parameters": {
-        "seeds": {"values": [1, 2, 3, 4, 5, 6]},
+        "seeds": {"values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]},
         "func_name": {"values": WINNING_MODELS},
     },
 }
 
 # 3: Start the sweep
-sweep_id = wandb.sweep(sweep=sweep_configuration, project="final_run")
-wandb.agent(sweep_id, function=main)
+sweep_id_1 = wandb.sweep(sweep=sweep_configuration_1, project="final_full_run")
+wandb.agent(sweep_id_1, function=main)
+

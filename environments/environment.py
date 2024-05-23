@@ -1,17 +1,12 @@
 from utils.datasets import OfflineDataSet, OnlineSimulationDataSet, ConcatDatasets
 from utils.samplers import NewUserBatchSampler, SimulationSampler
-from consts import *
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from torch import nn
-from utils.usersvectors import UsersVectors
-import torch.optim as optim
 from itertools import chain
-import wandb
 from utils import *
 import pickle
 from utils import personas
-import Simulation.smart_dm as smart_dm
 
 
 class Environment:
@@ -132,10 +127,12 @@ class Environment:
         self.set_train_mode()
         metrics = Metrics("ENV")
         if self.config['model_function'] != 'None':
-            with open(f'trained_models/{self.config["model_function"]}.pkl', 'rb') as f:
-                trained_model = pickle.load(f)
+            trained_models = []
+            for model_function in self.config['model_function'].split(","):
+                with open(f'trained_models/{model_function}.pkl', 'rb') as f:
+                    trained_models.append(pickle.load(f))
         else:
-            trained_model = None
+            trained_models = None
 
         for epoch in range(self.config["total_epochs"]):
             result_saver = ResultSaver(config=self.config, epoch=epoch)
@@ -143,7 +140,7 @@ class Environment:
             print(f"# Epoch {epoch}")
             print("#" * 16)
             if self.config["online_simulation_size"] > 0 and online_sim_type in ["before_epoch", "mixed"]:
-                online_simulation_dataset = OnlineSimulationDataSet(config=self.config, model=trained_model)
+                online_simulation_dataset = OnlineSimulationDataSet(config=self.config, model=trained_models)
                 online_simulation_sampler = SimulationSampler(online_simulation_dataset, SIMULATION_BATCH_SIZE)
                 online_simulation_dataloader = DataLoader(online_simulation_dataset,
                                                           batch_sampler=online_simulation_sampler, shuffle=False)

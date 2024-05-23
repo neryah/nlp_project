@@ -5,22 +5,15 @@ from sklearn.metrics import accuracy_score
 import numpy as np
 
 # weak models:
-from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import SVR
 from sklearn.svm import SVC
-from sklearn.neural_network import MLPRegressor
 from sklearn.neural_network import MLPClassifier
 
 #boosting models:
-from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.ensemble import AdaBoostRegressor
 from sklearn.ensemble import AdaBoostClassifier
 #bagging models:
-from sklearn.ensemble import BaggingRegressor
 from sklearn.ensemble import BaggingClassifier
 
 from sklearn.model_selection import cross_val_score
@@ -95,24 +88,10 @@ class MLTrainer:
         return scores
 
 
-def LinearRegressionTrainer():
-    trainer = MLTrainer()
-    model = LinearRegression()
-    trainer.train(model)
-    return model
-
-
 def LogisticRegressionTrainer():
     trainer = MLTrainer()
     model = LogisticRegression()
     model.fit(trainer.X, trainer.Y)
-    return model
-
-
-def RandomForestRegressorTrainer():
-    trainer = MLTrainer()
-    model = RandomForestRegressor()
-    trainer.train(model)
     return model
 
 
@@ -123,23 +102,9 @@ def RandomForestClassifierTrainer():
     return model
 
 
-def SVRTrainer():
-    trainer = MLTrainer()
-    model = SVR()
-    trainer.train(model)
-    return model
-
-
 def SVCTrainer():
     trainer = MLTrainer()
     model = SVC()
-    model.fit(trainer.X, trainer.Y)
-    return model
-
-
-def MLPRegressorTrainer():
-    trainer = MLTrainer()
-    model = MLPRegressor()
     model.fit(trainer.X, trainer.Y)
     return model
 
@@ -151,13 +116,6 @@ def MLPClassifierTrainer():
     return model
 
 
-def GradientBoostingRegressorTrainer():
-    trainer = MLTrainer()
-    model = GradientBoostingRegressor()
-    trainer.train(model)
-    return model
-
-
 def GradientBoostingClassifierTrainer():
     trainer = MLTrainer()
     model = GradientBoostingClassifier()
@@ -165,24 +123,10 @@ def GradientBoostingClassifierTrainer():
     return model
 
 
-def AdaBoostRegressorTrainer():
-    trainer = MLTrainer()
-    model = AdaBoostRegressor()
-    trainer.train(model)
-    return model
-
-
 def AdaBoostClassifierTrainer():
     trainer = MLTrainer()
     model = AdaBoostClassifier()
     model.fit(trainer.X, trainer.Y)
-    return model
-
-
-def BaggingRegressorTrainer():
-    trainer = MLTrainer()
-    model = BaggingRegressor()
-    trainer.train(model)
     return model
 
 

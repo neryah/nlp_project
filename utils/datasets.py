@@ -241,7 +241,6 @@ class OnlineSimulationDataSet(Dataset):
                 negative_topics = np.array(negative_topics)
                 np.random.shuffle(negative_topics)
 
-            ml_nature = 1 if ml_model is not None else 0
 
             self.ACTIONS = {0: ("correct", 0, user_strategies.correct_action),
                             1: ("random", basic_nature[0], user_strategies.random_action),
@@ -252,8 +251,11 @@ class OnlineSimulationDataSet(Dataset):
                                                                                             quality_threshold)),
                             4: ("LLM_static", basic_nature[3], user_strategies.LLM_based(is_stochastic=False)),
                             5: ("LLM_dynamic", basic_nature[4], user_strategies.LLM_based(is_stochastic=True)),
-                            6: ("ML_model", ml_nature, user_strategies.ML_based(ml_model)),
                             }
+            if ml_model is not None:
+                i = 6
+                for j in range(len(ml_model)):
+                    self.ACTIONS[i + j] = (f"ML_model_{j}", 1, user_strategies.ML_based(ml_model[j]))
             self.nature = np.random.rand(len(self.ACTIONS)) * np.array([v[1] for v in self.ACTIONS.values()])
             self.nature = self.nature / sum(self.nature)
             self.user_proba = self.nature.copy()

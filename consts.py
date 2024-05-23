@@ -39,15 +39,15 @@ ALL_CLASSIFIERS = ["LogisticRegressionTrainer", "RandomForestClassifierTrainer",
                    "PassiveAggressiveClassifierTrainer", "PerceptronTrainer", "RidgeClassifierTrainer",
                    "QuadraticDiscriminantAnalysisTrainer"]
 
-# WINNING_MODELS = ['None', 'BernoulliNBTrainer', 'RidgeClassifierTrainer', 'SVCTrainer', 'LogisticRegressionTrainer',
-#                   'AdaBoostClassifierTrainer', 'MultinomialNBTrainer', 'GradientBoostingClassifierTrainer']
-
 WINNING_MODELS = ["SVCTrainer", "ExtraTreeClassifierTrainer", "DecisionTreeClassifierTrainer",
                   "MLPClassifierTrainer", "BaggingClassifierTrainer", "RandomForestClassifierTrainer",
                   "GradientBoostingClassifierTrainer", "RidgeClassifierTrainer", "LogisticRegressionTrainer",
                   "AdaBoostClassifierTrainer"]
-BEST_5 = ["RandomForestClassifierTrainer", "MLPClassifierTrainer", "ExtraTreeClassifierTrainer",
-          "DecisionTreeClassifierTrainer", "BaggingClassifierTrainer"]
+BEST_4 = ["RandomForestClassifierTrainer", "MLPClassifierTrainer", "ExtraTreeClassifierTrainer",
+          "DecisionTreeClassifierTrainer"]
+COMB_4 = ['RandomForestClassifierTrainer,MLPClassifierTrainer,ExtraTreeClassifierTrainer,DecisionTreeClassifierTrainer']
+COMB_3 = ['RandomForestClassifierTrainer,MLPClassifierTrainer,ExtraTreeClassifierTrainer']
+
 
 TEAM_NAME = 'nlp_shit'
 PROJECT_NAME = 'final_full_run'

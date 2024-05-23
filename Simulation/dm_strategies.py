@@ -134,13 +134,6 @@ def LLM_based(is_stochastic):
 
 def ML_based(model):
     def func(information):
-        # info = [information['review_features'][i] for i in range(37)]
-        # prev = [information['previous_rounds'][i][1] for i in range(len(information['previous_rounds']))]
-        # for i in range(10 - len(prev)):
-        #     prev.append(0)
-        # if model.predict([[information["bot_message"]] + info + prev])[0] > 8:
-        #     return 1
-        # return 0
         return model.predict([information["review_features"]])[0]
 
     return func

@@ -47,13 +47,23 @@ BEST_4 = ["RandomForestClassifierTrainer", "MLPClassifierTrainer", "ExtraTreeCla
           "DecisionTreeClassifierTrainer"]
 COMB_4 = ['RandomForestClassifierTrainer,MLPClassifierTrainer,ExtraTreeClassifierTrainer,DecisionTreeClassifierTrainer']
 COMB_3 = ['RandomForestClassifierTrainer,MLPClassifierTrainer,ExtraTreeClassifierTrainer']
+OTHER_COMB_3s = ['RandomForestClassifierTrainer,MLPClassifierTrainer,DecisionTreeClassifierTrainer',
+                 'RandomForestClassifierTrainer,ExtraTreeClassifierTrainer,DecisionTreeClassifierTrainer',
+                 'MLPClassifierTrainer,ExtraTreeClassifierTrainer,DecisionTreeClassifierTrainer']
+COMB_2_MACHINE = ['MLPClassifierTrainer,DecisionTreeClassifierTrainer',
+                  'ExtraTreeClassifierTrainer,DecisionTreeClassifierTrainer']
+COMB_2_OTHER = ['RandomForestClassifierTrainer,MLPClassifierTrainer',
+                'RandomForestClassifierTrainer,ExtraTreeClassifierTrainer',
+                'RandomForestClassifierTrainer,DecisionTreeClassifierTrainer',
+                'MLPClassifierTrainer,ExtraTreeClassifierTrainer',]
+
 
 
 TEAM_NAME = 'nlp_shit'
 PROJECT_NAME = 'final_full_run'
 SWEEP_IDS = ['ulmxfaed', '3ne6qb41', 'vrd9sng9', 'jhheufv1', 'ic27ntdb', 'gdtlrmq0',
              'hyy7aeu3', 'p6o3kisp', 's6bbzoa1', 'v9jjop58', 'sk3koflp', 'zatmfw6a',
-             'alhbawkc', 'n4tf6kny', '3y6sqa28']
+             'alhbawkc', 'n4tf6kny', '3y6sqa28', 'auyap1e0', 'yt5slifq', 'k6yj5j9m']
 
 COLOR_CYCLE = cycler(color=['b', 'g', 'r', 'c', 'm', 'y', 'k', 'orange', 'purple', 'brown', 'pink', 'gray', 'olive', ])
 

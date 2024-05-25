@@ -14,7 +14,7 @@ sweep_configuration_1 = {
     "method": "grid",
     "metric": {"goal": "maximize", "name": "AUC.test.max"},
     "parameters": {
-        "seeds": {"values": [1, 2, 3, 4, 5, 6]},
+        "seeds": {"values": [5, 6]},
         "func_name": {"values": COMB_2_MACHINE},
     },
 }

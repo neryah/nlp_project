@@ -105,5 +105,5 @@ all_bot_points = []
 hotels = utils.Hotels(config)
 
 start = time.time()
-env_model = Environment(config=config, mode='plot', without=8)
+env_model = Environment(config=config, mode='plot', without=0)
 print(f"The run took {time.time() - start} seconds which is {round((time.time() - start) / 60, 2)} minutes.")

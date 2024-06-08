@@ -64,17 +64,22 @@ def plot(without=0):
         names, scores = pickle.load(f)
 
     names = [x for _, x in sorted(zip(scores, names))][without:]
+    names = [CLASSIFIER_NAMES[name] for name in names]
     scores = sorted(scores)[without:]
-    plt.figure(figsize=(50, 15))
+    plt.figure(figsize=(40, 15))
     plt.bar(names, scores, color=plt.cm.viridis(np.linspace(0, 0.7, len(scores))))
-    plt.title('Model Performance Comparison')
-    plt.ylabel('Test Accuracy')
-    plt.xlabel('Model Type')
-    plt.xticks(rotation=45, fontsize=30, ha='right')
+    plt.title(f'Cross Validation Average Accuracy for Top {len(names)} Models', fontsize=60)
+    plt.ylabel('Test Accuracy', fontsize=40)
+    plt.xlabel('Model Name', fontsize=40)
+    plt.xticks(fontsize=30)
     plt.yticks(fontsize=30)
-    plt.ylim(min(scores) - 0.01, max(scores) + 0.01)
+    # adding text to bars
+    ax = plt.gca()
+    for i in range(len(scores)):
+        ax.text(i, scores[i] + 0.0001, f'{round(scores[i], 3)}', ha='center', fontsize=30)
+    plt.ylim(0.675, max(scores) + 0.01)
     plt.tight_layout()
-    plt.savefig('model_performance_comparison.png')
+    plt.savefig(f'plots/ml_sim_top_{len(names)}.png')
     plt.show()
 
 

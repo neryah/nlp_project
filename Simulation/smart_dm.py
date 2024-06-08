@@ -46,7 +46,6 @@ class MLTrainer:
 
     def train(self, model):
 
-
         # Split data into train and test sets
         X_train, X_test, Y_train, Y_test = train_test_split(self.X, self.Y, test_size=0.2)
 
@@ -86,13 +85,6 @@ class MLTrainer:
         scores = np.mean(cross_val_score(model, self.X, self.Y, cv=10, scoring='accuracy', n_jobs=-1))
         print(f"Cross validation scores: {scores}")
         return scores
-
-
-def LogisticRegressionTrainer():
-    trainer = MLTrainer()
-    model = LogisticRegression()
-    model.fit(trainer.X, trainer.Y)
-    return model
 
 
 def RandomForestClassifierTrainer():

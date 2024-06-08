@@ -56,6 +56,28 @@ COMB_2_OTHER = ['RandomForestClassifierTrainer,MLPClassifierTrainer',
                 'RandomForestClassifierTrainer,DecisionTreeClassifierTrainer',
                 'MLPClassifierTrainer,ExtraTreeClassifierTrainer',]
 
+CLASSIFIER_NAMES = {"LogisticRegressionTrainer": "LRC",
+                    "RandomForestClassifierTrainer": "RFC",
+                    "SVCTrainer": "SVC",
+                    "MLPClassifierTrainer": "MLPC",
+                    "GradientBoostingClassifierTrainer": "GBC",
+                    "AdaBoostClassifierTrainer": "ABC",
+                    "BaggingClassifierTrainer": "BC",
+                    "KNeighborsClassifierTrainer": "KNNC",
+                    "DecisionTreeClassifierTrainer": "DTC",
+                    "ExtraTreeClassifierTrainer": "ETC",
+                    "GaussianNBTrainer": "GNBC",
+                    "BernoulliNBTrainer": "BNBC",
+                    "MultinomialNBTrainer": "MNBC",
+                    "SGDClassifierTrainer": "SGDC",
+                    "PassiveAggressiveClassifierTrainer": "PAC",
+                    "PerceptronTrainer": "PC",
+                    "RidgeClassifierTrainer": "RC",
+                    "QuadraticDiscriminantAnalysisTrainer": "QDAC",
+                    'None': 'None'}
+
+BEST_2_COMBS = ['RandomForestClassifierTrainer,ExtraTreeClassifierTrainer',
+                'RandomForestClassifierTrainer,MLPClassifierTrainer']
 
 
 TEAM_NAME = 'nlp_shit'
@@ -63,7 +85,9 @@ PROJECT_NAME = 'final_full_run'
 SWEEP_IDS = ['ulmxfaed', '3ne6qb41', 'vrd9sng9', 'jhheufv1', 'ic27ntdb', 'gdtlrmq0',
              'hyy7aeu3', 'p6o3kisp', 's6bbzoa1', 'v9jjop58', 'sk3koflp', 'zatmfw6a',
              'alhbawkc', 'n4tf6kny', '3y6sqa28', 'auyap1e0', 'yt5slifq', 'k6yj5j9m',
-             '9ludyi8t', '36pwrjef']
+             '9ludyi8t', '36pwrjef', 'd56o1x1d', 'nfwuhhra']
+
+
 
 COLOR_CYCLE = cycler(color=['b', 'g', 'r', 'c', 'm', 'y', 'k', 'orange', 'purple', 'brown', 'pink', 'gray', 'olive', ])
 

@@ -65,6 +65,7 @@ parser.add_argument('--offline_simulation_size', type=int, default=0,
 parser.add_argument('--OFFLINE_SIM_DATA_PATH', type=str, default="data/LLM_games_personas.csv", help='LLM data path')
 parser.add_argument('--personas_balanced', type=str2bool, default=True, help='Personas balanced flag')
 parser.add_argument('--personas_group_number', type=int, default=-1, help='Personas group number')
+parser.add_argument('--env_mode', type=str, default="save_scores", help='Environment mode')
 
 
 args = parser.parse_args()
@@ -105,5 +106,5 @@ all_bot_points = []
 hotels = utils.Hotels(config)
 
 start = time.time()
-env_model = Environment(config=config, mode='plot', without=0)
+env_model = Environment(config=config, mode=config['env_mode'], without=0)
 print(f"The run took {time.time() - start} seconds which is {round((time.time() - start) / 60, 2)} minutes.")

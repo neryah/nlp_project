@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 from cycler import cycler
 
-
 DATA_GAME_REVIEWS_PATH = "data/game_reviews"
 
 DATA_CLEAN_ACTION_PATH_X = "data/games_clean_X.csv"
@@ -43,8 +42,14 @@ WINNING_MODELS = ["SVCTrainer", "ExtraTreeClassifierTrainer", "DecisionTreeClass
                   "MLPClassifierTrainer", "BaggingClassifierTrainer", "RandomForestClassifierTrainer",
                   "GradientBoostingClassifierTrainer", "RidgeClassifierTrainer", "LogisticRegressionTrainer",
                   "AdaBoostClassifierTrainer"]
+
+BEST_8_MODELS = ["SVCTrainer", "ExtraTreeClassifierTrainer", "DecisionTreeClassifierTrainer",
+                 "MLPClassifierTrainer", "BaggingClassifierTrainer", "RandomForestClassifierTrainer",
+                 "GradientBoostingClassifierTrainer", "AdaBoostClassifierTrainer"]
+
 BEST_4 = ["RandomForestClassifierTrainer", "MLPClassifierTrainer", "ExtraTreeClassifierTrainer",
           "DecisionTreeClassifierTrainer"]
+
 COMB_4 = ['RandomForestClassifierTrainer,MLPClassifierTrainer,ExtraTreeClassifierTrainer,DecisionTreeClassifierTrainer']
 COMB_3 = ['RandomForestClassifierTrainer,MLPClassifierTrainer,ExtraTreeClassifierTrainer']
 OTHER_COMB_3s = ['RandomForestClassifierTrainer,MLPClassifierTrainer,DecisionTreeClassifierTrainer',
@@ -54,7 +59,20 @@ COMB_2_MACHINE = ['ExtraTreeClassifierTrainer,DecisionTreeClassifierTrainer']
 COMB_2_OTHER = ['RandomForestClassifierTrainer,MLPClassifierTrainer',
                 'RandomForestClassifierTrainer,ExtraTreeClassifierTrainer',
                 'RandomForestClassifierTrainer,DecisionTreeClassifierTrainer',
-                'MLPClassifierTrainer,ExtraTreeClassifierTrainer',]
+                'MLPClassifierTrainer,ExtraTreeClassifierTrainer', ]
+ALL_COMBS = [
+    'RandomForestClassifierTrainer,MLPClassifierTrainer,ExtraTreeClassifierTrainer,DecisionTreeClassifierTrainer',
+    'RandomForestClassifierTrainer,MLPClassifierTrainer,ExtraTreeClassifierTrainer',
+    'RandomForestClassifierTrainer,MLPClassifierTrainer,DecisionTreeClassifierTrainer',
+    'RandomForestClassifierTrainer,ExtraTreeClassifierTrainer,DecisionTreeClassifierTrainer',
+    'MLPClassifierTrainer,ExtraTreeClassifierTrainer,DecisionTreeClassifierTrainer',
+    'RandomForestClassifierTrainer,MLPClassifierTrainer',
+    'RandomForestClassifierTrainer,ExtraTreeClassifierTrainer',
+    'RandomForestClassifierTrainer,DecisionTreeClassifierTrainer',
+    'MLPClassifierTrainer,ExtraTreeClassifierTrainer',
+    'MLPClassifierTrainer,DecisionTreeClassifierTrainer',
+    'ExtraTreeClassifierTrainer,DecisionTreeClassifierTrainer'
+]
 
 CLASSIFIER_NAMES = {"LogisticRegressionTrainer": "LRC",
                     "RandomForestClassifierTrainer": "RFC",
@@ -79,7 +97,6 @@ CLASSIFIER_NAMES = {"LogisticRegressionTrainer": "LRC",
 BEST_2_COMBS = ['RandomForestClassifierTrainer,ExtraTreeClassifierTrainer',
                 'RandomForestClassifierTrainer,MLPClassifierTrainer']
 
-
 TEAM_NAME = 'nlp_shit'
 PROJECT_NAME = 'final_full_run'
 SWEEP_IDS = ['ulmxfaed', '3ne6qb41', 'vrd9sng9', 'jhheufv1', 'ic27ntdb', 'gdtlrmq0',
@@ -87,10 +104,7 @@ SWEEP_IDS = ['ulmxfaed', '3ne6qb41', 'vrd9sng9', 'jhheufv1', 'ic27ntdb', 'gdtlrm
              'alhbawkc', 'n4tf6kny', '3y6sqa28', 'auyap1e0', 'yt5slifq', 'k6yj5j9m',
              '9ludyi8t', '36pwrjef', 'd56o1x1d', 'nfwuhhra']
 
-
-
 COLOR_CYCLE = cycler(color=['b', 'g', 'r', 'c', 'm', 'y', 'k', 'orange', 'purple', 'brown', 'pink', 'gray', 'olive', ])
-
 
 if USING_REACTION_TIME:
     STRATEGIC_FEATURES_ORDER += reaction_time_columns_names

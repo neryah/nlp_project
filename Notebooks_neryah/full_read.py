@@ -67,18 +67,19 @@ def calculate_epoch_accuracies(grouped: pd.DataFrame) -> Tuple[List[List[float]]
 def setup_plot(xlabel: str, ylabel: str, title: str, figsize: Tuple[int, int] = (10, 7)) -> None:
     """Sets up a matplotlib plot with the given labels and title."""
     plt.figure(figsize=figsize)
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
-    plt.title(title)
+    plt.xlabel(xlabel, fontsize=12)
+    plt.ylabel(ylabel, fontsize=12)
+    plt.title(title, fontsize=15)
 
 
 def add_text_to_bars(ax, heights: List[float], sorted_heights: List[float], offset: float = 0.0001,
-                     fontsize: int = 10) -> None:
+                     fontsize: int = 12, rank: bool = True) -> None:
     """Adds text annotations to the bars in the plot."""
     for i, height in enumerate(heights):
         ax.text(i, height + offset, round(height, 4), ha='center', va='bottom', fontsize=fontsize)
-        ax.text(i, height + offset, f'{sorted_heights.index(height) + 1}', ha='center', va='top', fontsize=fontsize,
-                color='white')
+        if rank:
+            ax.text(i, height + offset, f'{sorted_heights.index(height) + 1}', ha='center', va='top', fontsize=fontsize,
+                    color='white')
 
 
 def save_and_show_plot(filename: str) -> None:
@@ -114,14 +115,15 @@ def get_acc_horizontal(name):
 
 def plot_max_accuracies(names: List[str], mean_accs: List[float], stage: int) -> None:
     """Plots bar chart of maximum accuracies for each function."""
-    setup_plot('Model Type', 'Test Accuracy', f'Model Performance Comparison Stage {stage + 1}', figsize=(10, 7))
+    setup_plot('Classifier', 'Test Accuracy', f'Classifier Performance Comparison Stage {stage + 1}',
+               figsize=(10, 7))
     names1 = [get_acc(name) for name in names]
     ax = plt.gca()
     ax.bar(names1, mean_accs, color=plt.cm.viridis(np.linspace(0, 0.7, len(mean_accs))))
     sorted_mean_accs = sorted(mean_accs)
-    add_text_to_bars(ax, mean_accs, sorted_mean_accs, fontsize=10)
-    plt.xticks(fontsize=10)
-    plt.yticks(fontsize=10)
+    add_text_to_bars(ax, mean_accs, sorted_mean_accs, fontsize=12, rank=False)
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
     plt.ylim(min(mean_accs) - 0.0001, max(mean_accs) + 0.0001)
     save_and_show_plot(f'final_performance_stage_{stage + 1}.png')
 
@@ -143,8 +145,7 @@ def remove_none(names: List[str], mean_accs: List[float]) -> Tuple[List[str], Li
 
 def match_scores(scores: List[float], names: List[str], filtered_names: List[str]) -> List[float]:
     """Matches scores to the filtered names list."""
-    indices = [filtered_names.index(name) for name in names if name in filtered_names]
-    return [scores[indices.index(i)] for i in range(len(filtered_names))]
+    return [scores[names.index(name)] for name in filtered_names]
 
 
 def plot_comparison(filtered_names: List[str], filtered_accs: List[float], scores_orig: List[float], stage: int) \
@@ -157,12 +158,13 @@ def plot_comparison(filtered_names: List[str], filtered_accs: List[float], score
 
     sorted_filtered = sorted(filtered_accs, reverse=True)
     sorted_orig = sorted(scores_orig, reverse=True)
-    add_text_to_bars(ax, filtered_accs, sorted_filtered, fontsize=10)
-    add_text_to_bars(ax, scores_orig, sorted_orig, fontsize=10)
+    add_text_to_bars(ax, filtered_accs, sorted_filtered, fontsize=12)
+    add_text_to_bars(ax, scores_orig, sorted_orig, fontsize=12)
 
-    ax.set_ylabel('Scores')
-    ax.set_title(f'Filtered vs Original Scores  Stage {stage + 1}')
-    plt.xticks(fontsize=10)
+    ax.set_ylabel('Accuracy', fontsize=12)
+    ax.set_xlabel('Classifier', fontsize=12)
+    ax.set_title(f'Filtered vs Original Scores  Stage {stage + 1}', fontsize=15)
+    plt.xticks(fontsize=12)
     plt.ylim(min(scores_orig) - 0.01, max(filtered_accs) + 0.01)
     save_and_show_plot(f'final_performance_orig_stage_{stage + 1}.png')
 
@@ -177,15 +179,15 @@ def plot_ranking_diff(filtered_names: List[str], filtered_accs: List[float], sco
 
     filtered_names = [get_acc(name) for name in filtered_names]
 
-    setup_plot('Model Type', 'Difference', f'Difference in Ranking  Stage {stage + 1}', figsize=(10, 7))
+    setup_plot('Classifier', 'Difference', f'Difference in Ranking  Stage {stage + 1}', figsize=(12, 7))
     ax = plt.gca()
     ax.bar(filtered_names, ranking_diff, color=plt.cm.viridis(np.linspace(0, 0.7, len(ranking_diff))))
 
     for i, diff in enumerate(ranking_diff):
-        ax.text(i, diff + 0.0001, diff, ha='center', va='top', fontsize=10)
+        ax.text(i, diff + 0.0001, diff, ha='center', va='top', fontsize=12)
 
-    plt.xticks(fontsize=10)
-    plt.yticks(fontsize=10)
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
     plt.ylim(-10, 10)
     save_and_show_plot(f'ranking_difference_stage_{stage + 1}.png')
 

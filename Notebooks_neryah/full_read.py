@@ -163,7 +163,7 @@ def plot_comparison(filtered_names: List[str], filtered_accs: List[float], score
 
     ax.set_ylabel('Accuracy', fontsize=12)
     ax.set_xlabel('Classifier', fontsize=12)
-    ax.set_title(f'Filtered vs Original Scores  Stage {stage + 1}', fontsize=15)
+    ax.set_title(f'LSTM Accuracy vs Original Accuracy Stage {stage + 1}', fontsize=15)
     plt.xticks(fontsize=12)
     plt.ylim(min(scores_orig) - 0.01, max(filtered_accs) + 0.01)
     save_and_show_plot(f'final_performance_orig_stage_{stage + 1}.png')

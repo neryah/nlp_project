@@ -66,17 +66,19 @@ def plot(without=0):
     names = [x for _, x in sorted(zip(scores, names))][without:]
     names = [CLASSIFIER_NAMES[name] for name in names]
     scores = sorted(scores)[without:]
-    plt.figure(figsize=(40, 15))
+    plt.figure(figsize=(13, 7))
     plt.bar(names, scores, color=plt.cm.viridis(np.linspace(0, 0.7, len(scores))))
-    plt.title(f'Cross Validation Average Accuracy for Top {len(names)} Models', fontsize=60)
-    plt.ylabel('Test Accuracy', fontsize=40)
-    plt.xlabel('Model Name', fontsize=40)
-    plt.xticks(fontsize=30)
-    plt.yticks(fontsize=30)
+    plt.title(f'Cross Validation Average Accuracy for Top {len(names)} Models', fontsize=20)
+    plt.ylabel('Test Accuracy', fontsize=15)
+    plt.xlabel('Model Name', fontsize=15)
+    plt.xticks(fontsize=10)
+    plt.yticks(fontsize=10)
     # adding text to bars
     ax = plt.gca()
     for i in range(len(scores)):
-        ax.text(i, scores[i] + 0.0001, f'{round(scores[i], 3)}', ha='center', fontsize=30)
+        if scores[i] < 0.67:
+            ax.text(i, 0.676, f'{round(scores[i], 3)}', ha='center', fontsize=10)
+        ax.text(i, scores[i] + 0.0001, f'{round(scores[i], 3)}', ha='center', fontsize=10)
     plt.ylim(0.675, max(scores) + 0.01)
     plt.tight_layout()
     plt.savefig(f'plots/ml_sim_top_{len(names)}.png')
